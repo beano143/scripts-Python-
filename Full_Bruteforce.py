@@ -35,7 +35,6 @@ def run_crackmap():
                 brute = (f"crackmapexec smb {domain} -u {username[x]} -p {bruteforce} | grep +")
                 os.system(brute)
 
-
 def run_enum():
         keep = []
         burn = []
