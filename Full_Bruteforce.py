@@ -1,10 +1,6 @@
 import os
 import subprocess
 
-names = []
-
-
-
 def run_crackmap():
         keep = []
         burn = []
