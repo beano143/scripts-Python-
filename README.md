@@ -5,7 +5,7 @@
 ## limitations
 -in order for this script to run, the target computer will _need_ to have SMB running for this method to work
 
-## basic instructions
+## Basic Instructions
 - you will need to install 'crackmapexec'
 
   ```
@@ -19,3 +19,18 @@
 
 just import the code and your username list, you will also need a password list, I would suggest the rockyou database, this comes preinstalled on any kali Linux VM,
   gunzip rockyou to your directory and point the script at the file.
+
+
+# Cookie_bruteforce
+## Limitations
+- I don't fully know if this will even work on most things, however, i will be keeping it here just in case i need it for later
+
+## Basic Instructions
+- you will need a word list, you can find many of the [here](https://github.com/danielmiessler/SecLists/tree/master/Discovery/Web-Content)
+### To Run the Script
+- find the ip of the target site and add the directory in the format as instrusted in the code
+  finding the ip address can be done like this
+  ```
+  ping <domain>
+  ```
+  the ip will be embedded after the domain name
