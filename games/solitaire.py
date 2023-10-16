@@ -48,25 +48,35 @@ def display_game():
             print(f"{i + 1}: *")
 
 # Function to check if the move is valid
-def is_valid_move(card, target_pile):
+def is_valid_move(cards, target_pile):
     if not tableau[target_pile]:
         return True
     last_card, _ = tableau[target_pile][-1]
-    if ranks.index(last_card[0]) - 1 == ranks.index(card[0]) and last_card[2] != card[2]:
-        if (last_card[2] == 'Red' and card[2] == 'Black') or (last_card[2] == 'Black' and card[2] == 'Red'):
+    if last_card[0] == '*':
+        if target_pile == 0:
             return True
-        else:
-            return False
-    return False
+        elif len(tableau[target_pile]) > 1:
+            second_last_card, _ = tableau[target_pile][-2]
+            return ranks.index(second_last_card[0]) - 1 == ranks.index(cards[0][0][0]) and second_last_card[2] != cards[0][0][2]
+    else:
+        return ranks.index(last_card[0]) - 1 == ranks.index(cards[0][0][0]) and last_card[2] != cards[0][0][2]
 
 # Function to move a card from one pile to another
-def move_card(source_pile, target_pile):
-    card, _ = tableau[source_pile].pop()
-    tableau[target_pile].append((card, True))
-    if tableau[source_pile]:
-        next_card, revealed = tableau[source_pile][-1]
-        if not revealed:
-            tableau[source_pile][-1] = (next_card, True)
+def move_card(source_pile, target_pile, num_cards_to_move=1):
+    if source_pile == 0:
+        for _ in range(num_cards_to_move):
+            card = stock.pop(0)
+            tableau[target_pile].append((card, True))
+    else:
+        cards_to_move = []
+        for _ in range(num_cards_to_move):
+            card, revealed = tableau[source_pile][-1]
+            if revealed:
+                cards_to_move.append(tableau[source_pile].pop())
+            else:
+                break
+        for card in reversed(cards_to_move):
+            tableau[target_pile].append(card)
 
 # Function to move a card to the foundation
 def move_to_foundation(card):
@@ -120,8 +130,9 @@ while True:
                             print("Invalid choice, try again.")
                             continue
                     else:
-                        if is_valid_move(tableau[source_pile][-1][0], target_pile):
-                            move_card(source_pile, target_pile)
+                        num_cards_to_move = len(tableau[source_pile])
+                        if is_valid_move([tableau[source_pile][-i - 1] for i in range(num_cards_to_move)], target_pile):
+                            move_card(source_pile, target_pile, num_cards_to_move)
                         else:
                             print("Invalid move, try again.")
                             continue
