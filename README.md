@@ -1,11 +1,16 @@
 # Main
 - Feel free to use this code for whatever you need it for, this read me file will be written as I update this repository, if you are looking for a specific files instructions ctr-F and search for the file name.
 
-# Full_bruteforce.py
-## limitations
+# games
+- This is for any of the games that i upload, feel free to play them; and if you find any errors please let me know
+
+# Actual code
+
+## Full_bruteforce.py
+### limitations
 -in order for this script to run, the target computer will _need_ to have SMB running for this method to work
 
-## Basic Instructions
+### Basic Instructions
 - you will need to install 'crackmapexec'
 
   ```
@@ -21,13 +26,13 @@ just import the code and your username list, you will also need a password list,
   gunzip rockyou to your directory and point the script at the file.
 
 
-# Cookie_bruteforce
-## Limitations
+## Cookie_bruteforce
+### Limitations
 - I don't fully know if this will even work on most things, however, i will be keeping it here just in case i need it for later
 
-## Basic Instructions
+### Basic Instructions
 - you will need a word list, you can find many of the [here](https://github.com/danielmiessler/SecLists/tree/master/Discovery/Web-Content)
-### To Run the Script
+#### To Run the Script
 - find the ip of the target site and add the directory in the format as instrusted in the code
   finding the ip address can be done like this
   ```
