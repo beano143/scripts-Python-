@@ -39,3 +39,9 @@ just import the code and your username list, you will also need a password list,
   ping <domain>
   ```
   the ip will be embedded after the domain name
+
+## Hydra script blocks
+### the hydra file is currently being worked on, it will be done in the next few weeks, I will update as i have code.
+
+## minor code 
+### minor code is just lighter code that doesnt need a full file suit for it, as to what they all do, an explination will be in comments or the code is self explanitory.
