@@ -43,5 +43,10 @@ just import the code and your username list, you will also need a password list,
 ## Hydra script blocks
 ### the hydra file is currently being worked on, it will be done in the next few weeks, I will update as i have code.
 
+## ip finding and abuse
+- Note: More will be added
+### find all local
+- Note: built for linux; if you're running this on a windows system you will need to change the code for a differnt filtering method however the rest will still work
+just run the script wait a few seconds and it will return a list of all of the local ip addresses for your subnet (this will however not scan for some sbubnets outside of yours ex: your ip address is '192.168.x.x' while there is a '172.25.x.x' subnet
 ## minor code 
 ### minor code is just lighter code that doesnt need a full file suit for it, as to what they all do, an explination will be in comments or the code is self explanitory.
