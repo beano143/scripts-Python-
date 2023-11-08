@@ -17,7 +17,8 @@ def read_fix_file(data):
         for obj in data:
             if obj == "Key.enter":
                 datal += '\n'
-            elif obj in ["Key.cmd", "Key.cmd_r", "Key.shft_r", "Key.alt_r", "Key.esc", "Key.caps_lock", "Key.ctrl", "Key.alt", "Key.tab", "Key.shift", "Key.backspace", "Key.delete","Key.space"]:
+            elif obj in ["Key.cmd", "Key.cmd_r", "Key.esc", "Key.caps_lock", "Key.ctrl", "Key.alt", "Key.alt_r", 
+                         "Key.tab", "Key.shift", "Key.shft_r", "Key.backspace", "Key.delete","Key.space"]:
                 datal += " "
             else:
                 datal += obj
