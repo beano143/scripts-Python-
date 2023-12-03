@@ -2,18 +2,81 @@ import subprocess
 
 file_name = 'challange_2.dd'
 
-def get_files(del_files):
-        for obj in data:
-                if '*' in obj:
-                        if '.swp' not in obj:
-                                del_files.append(obj)
-def get_type(del_files):
-        types = []
-        for obj in del_files:
-                obj = obj.split('.')
-                file_type = obj[-1]
-                types.append(file_type)
-        return types
+def get_files(obj):
+    if '*' in obj:
+        if '.swp' not in obj:
+            return obj
 
-def run_fls(part, node, is node):
-  
+def run_fls(part, node, isnode):
+    if isnode:
+        cmd = ['fls', '-o', part, file_name, node]
+    else:
+        cmd = ['fls', '-o', part, file_name]
+    out = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    output = out.stdout
+    data = output.split('\n')
+    return data
+
+def partions():
+    cmd = ['mmls', file_name]
+    out = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    output = out.stdout
+    output = output.split('\n')
+
+    returned = []
+    for obj in output:
+        if 'Meta' not in obj and '-' not in obj and 'Slot' not in obj and 'GUID' not in obj and 'Off' not in obj and 'Units' not in obj:
+            obj = obj.split('    ')
+            objs = obj[-1].split('   ')
+            print(objs)
+                if len(objs) >1:
+                    returned.append(objs[1])
+    return returned
+
+
+def main():
+    icat_global = []
+    files_global = []
+    partion_list = partions()
+
+    for partion in pation_list:
+        fls_local = run_fls(partion, 0, False)
+        for object in fls_local:
+            obj = object.split(": ")
+            if "d/d" in object:
+                node = obj[0].split("d/d ")
+                files_global.append(node[-1])
+            else:
+                file = obj.split('.')
+                file_type = file[-1]
+                icat_files.append(get_files(obj[-1]), partion, file_type)
+
+        
+        while files_global:
+            save_data = []
+            for file in files_global:
+                fls_local = run_fls(partion, file, True)
+                for object in fls_local:
+                    obj = object.split(": ")
+                    if "d/d" in object:
+                        node = obj[0].split("d/d ")
+                        save_data.append(node[-1])
+                    else:
+                        file = obj.split('.')
+                        file_type = file[-1]
+                        icat_files.append(get_files(obj[-1]), partion, file_type)
+            if save_data:
+                files_global = save_data
+            else:
+                files_global = []
+
+    if icat_global:
+        file_num = 0
+        for icat in icat_global:
+            run = ['icat', '-o', icat[1:0], file_name, icat[0:0]]
+            out = subprocess.run(run, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            output = out.stdout
+
+            file_num += 1
+            with open(f'output{file_num}.{icat[2:0]}', 'w') as file:
+                    file.write(output)
