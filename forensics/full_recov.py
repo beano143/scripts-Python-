@@ -73,7 +73,7 @@ def main():
     if icat_global:
         file_num = 0
         for icat in icat_global:
-            run = ['icat', '-o', icat[1], file_name, icat[0]]
+            run = ['icat', '-r', '-o', icat[1], file_name, icat[0]]
             out = subprocess.run(run, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             output = out.stdout
 
