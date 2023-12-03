@@ -73,10 +73,10 @@ def main():
     if icat_global:
         file_num = 0
         for icat in icat_global:
-            run = ['icat', '-o', icat[1:0], file_name, icat[0:0]]
+            run = ['icat', '-o', icat[1], file_name, icat[0]]
             out = subprocess.run(run, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             output = out.stdout
 
             file_num += 1
-            with open(f'output{file_num}.{icat[2:0]}', 'w') as file:
+            with open(f'output{file_num}.{icat[2]}', 'w') as file:
                     file.write(output)
