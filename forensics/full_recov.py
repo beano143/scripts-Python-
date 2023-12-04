@@ -29,8 +29,8 @@ def partions(): # finds each partion
             obj = obj.split('    ')
             objs = obj[-1].split('   ')
             print(objs)
-                if len(objs) >1:
-                    returned.append(objs[1])
+            if len(objs) >1:
+                returned.append(objs[1])
     return returned
 
 
