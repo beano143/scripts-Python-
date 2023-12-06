@@ -2,12 +2,6 @@ import subprocess
 
 file_name = 'challenge_2.dd'
 
-def get_files(obj): #seperates out files from the rest of the outputs
-        print(obj)
-        if '*' in obj and '$' not in obj:
-                if '.swp' not in obj:
-                        return obj
-
 def run_fls(part, node, isnode): # for init and recursive folder discovery
         if isnode:
                 cmd = ['fls', '-o', part, file_name, node] # runs when on a folder
@@ -34,6 +28,15 @@ def partions(): # finds each partion
         return returned
 
 
+def icat_data(partion, file):
+        file_type = file[-1]
+        file_data = file[0].split(':\t')
+        file_name = file_data[-1]
+        file_node = file_data[0].split('r/r ')
+        file_node = file_node[-1].split("* ")
+        file_node = file_node[-1]
+        return file_name, file_type, file_node, partion
+
 def main(): # main loop
         icat_global = []
         files_global = []
@@ -43,21 +46,26 @@ def main(): # main loop
         for partion in partion_list:
                 fls_local = run_fls(partion, 0, False)
 
-        for object in fls_local:
-                if "d/d" in object:
-                        node = object.split("d/d ")
-                        files_global.append(node[-1])
-                else:
-                        file = object.split('.')
-                        if file != ['']:
-                                file_type = file[-1]
-                                data = [get_files(file[0]), partion, file_type]
-                                icat_global.append(data)
+                for object in fls_local:
+                        if "d/d" in object:
+                                node = object.split("d/d ")
+                                node = node[-1].split(":\t")
+                                node.append(partion)
+                                files_global.append(node)
+
+                        else:
+                                if '.' in object:
+                                        file = object.split('.')
+                                        if file != ['']:
+                                                data = icat_data(partion, file)
+                                                icat_global.append(data)
 
         while files_global:
                 save_data = []
                 for file in files_global:
-                        fls_local = run_fls(partion, file, True)
+                        partion = file[2]
+                        node = file[0]
+                        fls_local = run_fls(partion, node, True)
                         for object in fls_local:
                                 if "d/d" in object:
                                         node = object.split("d/d ")
@@ -66,9 +74,9 @@ def main(): # main loop
                                         file = object.split('.')
                                         if file != ['']:
                                                 file_type = file[-1]
-                                                print(file[0])
-                                                data = [get_files(file[0]), partion, file_type]
+                                                data = icat_data(partion, file)
                                                 icat_global.append(data)
+
                 if save_data:
                         files_global = save_data
                 else:
@@ -77,12 +85,14 @@ def main(): # main loop
         if icat_global:
                 file_num = 0
                 for icat in icat_global:
-                        cmd = ['icat', '-r', '-o', icat[1], file_name, icat[0]]
-                        out = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-                        output = out.stdout
+                        cmd = ['icat', '-r', '-o', icat[3], file_name, icat[2]]
+                        out = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-                        file_num += 1
-                        with open(f'output{file_num}.{icat[2]}', 'w') as file:
-                                file.write(output)
+                        if out.returncode == 0:
+
+                                file_num += 1
+                                with open(f'{icat[0]}:output{file_num}.{icat[1]}', 'wb') as file:
+                                        file.write(out.stdout)
+
 
 main()
