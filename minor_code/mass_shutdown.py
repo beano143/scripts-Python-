@@ -1,8 +1,8 @@
 import subprocess
 
 print("you are pc: ")
-z = subprocess.run(['hostname'], 
-z = z.stdout
+z = subprocess.run(['hostname'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) 
+z = z.stdout()
 
 def shutdown():
     shutdown_hostnames = input("Enter the hostname of the target computer: ")
