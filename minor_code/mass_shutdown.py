@@ -5,7 +5,7 @@ z = subprocess.run(['hostname'], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
 z = z.stdout()
 
 def shutdown():
-    shutdown_hostnames = input("Enter the hostname of the target computer: ")
+    shutdown_hostnames = input("Enter the hostname of the target computers: ")
     x = int(input("what is the start of your effect zone: "))
     y = int(input("what is the end of your effect zone: "))
     for i in range(x, (y+1)):
