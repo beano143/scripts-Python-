@@ -12,6 +12,7 @@ def run_fls(part, node, isnode): # for init and recursive folder discovery
                 cmd = ['fls', '-o', part, file_name, node] # runs when on a folder
         else:
                 cmd = ['fls', '-o', part, file_name] # used for the init run
+                
         out = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         output = out.stdout
         data = output.split('\n')
@@ -58,6 +59,7 @@ def filtering_data(partion, node, isnode): # used for recursive file checking; f
                                 if file != ['']:
                                         data = icat_data(partion, file)
                                         icat.append(data)
+                                        
         return files, icat
 
 partion_list = partions() # gets the partions of the drive
