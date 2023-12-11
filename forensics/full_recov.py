@@ -1,6 +1,11 @@
 import subprocess
 
-file_name = 'challenge_2.dd'
+file_name = 'challenge_2.dd' # init variables 
+icat_global = []
+files_global = []
+files_local = []
+icat_local = []
+returned_folders = []
 
 def run_fls(part, node, isnode): # for init and recursive folder discovery
         if isnode:
@@ -28,7 +33,7 @@ def partions(): # finds each partion
         return returned
 
 
-def icat_data(partion, file):
+def icat_data(partion, file): # returns data used for the icat command
         file_type = file[-1]
         file_data = file[0].split(':\t')
         file_name = file_data[-1]
@@ -37,62 +42,61 @@ def icat_data(partion, file):
         file_node = file_node[-1]
         return file_name, file_type, file_node, partion
 
-def main(): # main loop
-        icat_global = []
-        files_global = []
-        partion_list = partions()
-        fls_local = []
-
-        for partion in partion_list:
-                fls_local = run_fls(partion, 0, False)
-
-                for object in fls_local:
-                        if "d/d" in object:
-                                node = object.split("d/d ")
-                                node = node[-1].split(":\t")
-                                node.append(partion)
-                                files_global.append(node)
-
-                        else:
-                                if '.' in object:
-                                        file = object.split('.')
-                                        if file != ['']:
-                                                data = icat_data(partion, file)
-                                                icat_global.append(data)
-
-        while files_global:
-                save_data = []
-                for file in files_global:
-                        partion = file[2]
-                        node = file[0]
-                        fls_local = run_fls(partion, node, True)
-                        for object in fls_local:
-                                if "d/d" in object:
-                                        node = object.split("d/d ")
-                                        save_data.append(node[-1])
-                                else:
-                                        file = object.split('.')
-                                        if file != ['']:
-                                                file_type = file[-1]
-                                                data = icat_data(partion, file)
-                                                icat_global.append(data)
-
-                if save_data:
-                        files_global = save_data
+def filtering_data(partion, node, isnode): # used for recursive file checking; filters files and folders
+        files = []
+        icat = []
+        fls_local = run_fls(partion, node, isnode)
+        for object in fls_local:
+                if "d/d" in object:
+                        node = object.split("d/d ")
+                        node = node[-1].split(":\t")
+                        node.append(partion)
+                        files.append(node)
                 else:
-                        files_global = []
+                        if '.' in object:
+                                file = object.split('.')
+                                if file != ['']:
+                                        data = icat_data(partion, file)
+                                        icat.append(data)
+        return files, icat
 
-        if icat_global:
-                file_num = 0
-                for icat in icat_global:
-                        cmd = ['icat', '-r', '-o', icat[3], file_name, icat[2]]
-                        out = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+partion_list = partions() # gets the partions of the drive
 
-                        if out.returncode == 0:
+for partion in partion_list:
+        files_local, icat_local = filtering_data(partion, 0, False)
+        for file in files_local:
+                files_global.append(file)
+                returned_folders.append(file[1])
+        for icat in icat_local:
+                icat_global.append(icat)
 
-                                file_num += 1
-                                with open(f'{icat[0]}:output{file_num}.{icat[1]}', 'wb') as file:
-                                        file.write(out.stdout)
+while files_global: # runs recusive file discovery
+        save_data = [] # any folders found  are put here
+        for file in files_global:
+                partion = file[2]
+                node = file[0]
+                files_local, icat_local = filtering_data(partion, node, True)
+                for file in files_local:
+                        save_data.append(file)
+                        returned_folders.append(file[1])
+                for icat in icat_local:
+                        icat_global.append(icat)
+        if save_data:
+                files_global = save_data # swaps files_glo for save data; this removes double running and skiping folders 
+        else:
+                 files_global = [] # this will end the loop
 
+if icat_global: # if there are any files found; save them
+        file_num = 0
+        for icat in icat_global:
+                cmd = ['icat', '-r', '-o', icat[3], file_name, icat[2]]
+                out = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-main()
+                if out.returncode == 0:
+                        file_num += 1
+                        with open(f'{icat[0]}:output{file_num}.{icat[1]}', 'wb') as file:
+                                file.write(out.stdout)
+
+print(f"all folders found have been saved: there were {file_num} files")
+print("folders found: ")
+print(returned_folders)
