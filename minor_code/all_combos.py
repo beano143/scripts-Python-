@@ -1,13 +1,11 @@
-import string # if you need more and can't figure it out, get off my page.
+import string
+from itertools import product
 
-all_characters = string.ascii_letters + string.digits + string.punctuation
+def generate_combinations(size):
+    all_characters = string.ascii_letters + string.digits + string.punctuation
+    with open(f'words_longform_{size}.txt', 'a') as file:
+        for combo in product(all_characters, repeat=size):
+            file.write(''.join(combo) + '\n')
 
-with open('words_longform.txt', 'a') as file:
-    for char1 in all_characters:
-        for char2 in all_characters:
-            for char3 in all_characters:
-                for char4 in all_characters:
-                    for char5 in all_characters:
-                        for char6 in all_characters:
-                            combo = char1 + char2 + char3 + char4 + char5 + char6
-                            file.write(combo + '\n')
+# Adjust the size parameter to control the character size
+generate_combinations(size=6)  # Change the size as needed
