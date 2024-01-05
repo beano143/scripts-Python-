@@ -36,7 +36,7 @@ while mindex <= maxdex: # easy to break loop
             info = f"collision found with hash#{poss_hash} with {string}"
             collisions.append(info)
 
-    index += 1 # increases the size of the srings for each loop
+    mindex += 1 # increases the size of the srings for each loop
 
 print("all hashes found:") # shows data
 print(hashes, "\n")
