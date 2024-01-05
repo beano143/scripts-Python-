@@ -25,7 +25,7 @@ def generate_hash(string): # hashes each string
     out = rerun.stdout.split(" ")
     return out[0]
  
-colisions = [] # save data for if and when a colision is found
+collisions = [] # save data for if and when a colision is found
 while mindex <= maxdex: # easy to break loop
     use = generate_combinations(mindex)
     for string in use:
@@ -40,7 +40,7 @@ while mindex <= maxdex: # easy to break loop
 
 print("all hashes found:") # shows data
 print(hashes, "\n")
-if colisions:
+if collisions:
     print("colisions found:")
     for collision in collisions:
         print(collision)
