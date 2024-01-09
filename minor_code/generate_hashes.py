@@ -1,46 +1,48 @@
-from string import ascii_letters, digits, punctuation # adds all of the sting types that are human readable 
-from itertools import product # adds a function that can scale and generate lists of characters 
+from string import ascii_letters, digits, punctuation
+from itertools import product
 import subprocess
-maxdex = 2 # sets  to max string size
-mindex = 1 # sets the minimum string size 
+
+maxdex = 2 # end size 
+mindex = 1 # start size 
 hashes = []
- 
-def generate_combinations(size): # for each size scale generate all posible combos
+
+def generate_combinations(size):
     data = []
-    all_characters = ascii_letters + digits + punctuation
-    for combo in product(all_characters, repeat=size):
-        data.append(combo)
+    all_characters = ascii_letters + digits + punctuation + " " # all human readable characters 
+    for combo in product(all_characters, repeat=size): # generates the combinations 
+        data.append(combo) # writes them down for later use
     return data
- 
-def generate_hash(string): # hashes each string
-    data = ""
-    for info in string:
-        data += info
-    cmd = ["echo", "-n", f"'{data}'"] # base command 
-    hash_type = ["md5sum"] # sets the hashing type
-    run = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) # wrights the data
-    (stdout, stderr) = run.communicate()
- 
-    rerun = subprocess.run(hash_type, input=stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) # converts the data to the hash type
-    out = rerun.stdout.split(" ")
+
+def generate_hash(string):
+    data = "".join(string)
+    hash_type = ["md5sum"] # change for whatever hash alg your wanting to generate 
+    run = subprocess.run(hash_type, input=data.encode(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out = run.stdout.decode().split(" ")
     return out[0]
- 
-collisions = [] # save data for if and when a colision is found
-while mindex <= maxdex: # easy to break loop
-    use = generate_combinations(mindex)
-    for string in use:
-        poss_hash = generate_hash(string)
-        if poss_hash not in hashes: # if its a new hash add it to the list 
-                hashes.append(poss_hash)
-        else: # else set it to a found colision
-            info = f"collision found with hash#{poss_hash} with {string}"
-            collisions.append(info)
 
-    mindex += 1 # increases the size of the srings for each loop
+collisions = []
 
-print("all hashes found:") # shows data
-print(hashes, "\n")
+try:
+    while mindex <= maxdex:
+        with open("hashes.txt", "a") as file:
+            use = generate_combinations(mindex)
+            for string in use:
+                poss_hash = generate_hash(string)
+                with open("hashes.txt", "r") as reading:
+                    if poss_hash not in reading:
+                        data = f"{poss_hash}\n"
+                        file.write(data)
+                    else:
+                        info = f"Collision found with hash#{poss_hash} with {string}"
+                        collisions.append(info)
+        mindex += 1
+
+except KeyboardInterrupt as e:
+    print(f"\nProgram ended early.\nHash string index at end: {mindex}")
+
+
+print("All hashes found.\nHashes can be found in 'hashes.txt'")
 if collisions:
-    print("colisions found:")
+    print("Colisions found:")
     for collision in collisions:
         print(collision)
