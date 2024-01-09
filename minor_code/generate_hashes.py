@@ -4,7 +4,6 @@ import subprocess
 
 maxdex = 2 # end size 
 mindex = 1 # start size 
-hashes = []
 
 def generate_combinations(size):
     data = []
@@ -23,21 +22,21 @@ def generate_hash(string):
 collisions = []
 
 try:
-    while mindex <= maxdex:
+    while mindex <= maxdex: # generates untill string legnth is reached
         with open("hashes.txt", "a") as file:
             use = generate_combinations(mindex)
-            for string in use:
-                poss_hash = generate_hash(string)
+            for string in use: # runs for each returned string
+                poss_hash = generate_hash(string) # generates a hash
                 with open("hashes.txt", "r") as reading:
-                    if poss_hash not in reading:
+                    if poss_hash not in reading: # makes sure the hash isnt in the table already
                         data = f"{poss_hash}\n"
                         file.write(data)
-                    else:
+                    else: # otherwise it markes it down as a collision
                         info = f"Collision found with hash#{poss_hash} with {string}"
                         collisions.append(info)
         mindex += 1
 
-except KeyboardInterrupt as e:
+except KeyboardInterrupt as e: # the terminal will nolonger yell at you for ending the program
     print(f"\nProgram ended early.\nHash string index at end: {mindex}")
 
 
