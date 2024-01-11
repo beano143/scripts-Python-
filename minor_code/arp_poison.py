@@ -1,3 +1,5 @@
+# NOTE: you do need to install dsniff
+
 import subprocess
 import re
 
