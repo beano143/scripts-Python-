@@ -1,3 +1,5 @@
+# NOTE: you need to in stall dsniff (apt install dsniff)
+
 import subprocess
 import re
 try:
