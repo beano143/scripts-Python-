@@ -15,11 +15,9 @@ def read_fix_file(data):
     with open('inputs.txt', 'a') as file:
         datal = ""
         for obj in data:
-            if obj == "Key.enter":
-                datal += '\n'
-            elif obj in ["Key.cmd", "Key.cmd_r", "Key.esc", "Key.caps_lock", "Key.ctrl", "Key.alt", "Key.alt_r", 
-                         "Key.tab", "Key.shift", "Key.shft_r", "Key.backspace", "Key.delete","Key.space"]:
-                datal += " "
+            if obj in ["Key.cmd", "Key.cmd_r", "Key.esc", "Key.caps_lock", "Key.ctrl", "Key.alt", "Key.alt_r", 
+                         "Key.tab", "Key.shift", "Key.shft_r", "Key.backspace", "Key.delete","Key.space", "key.enter"]:
+                datal += "\n"
             else:
                 datal += obj
         file.write(datal)
