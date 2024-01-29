@@ -1,15 +1,24 @@
-# this is just a simple shell script to run passwords against encrypted files 
+#!/bin/bash
 
-for pass in $(cat wordlist.txt); # password list 
-do
-    for i in $( openssl enc -list | tail +2); # removes null lines
-        # add for each level of encryption
-        do $(openssl ${i:1} -d -pbkdf2 -in Level_2_Challenge.enc -out Decrypt_$i-$pass.txt -k $pass);
-        # remove hashes on following lines for multi layer
-        #for pass2 in $(cat wordlist.txt); # password list 
-        #do
-        #    for i in $( openssl enc -list | tail +2);
-        #        do $(openssl ${i:1} -d -pbkdf2 -in Level_2_Challenge.enc -out Decrypt_$i-$pass.txt -k $pass2)
-        #done;
-    done;
-done;
+# Define variables
+wordlist="wordlist.txt"
+input_file="layer_2_encryption.enc"
+
+# Loop through passwords from the wordlist file
+while IFS= read -r pass; do
+    # Loop through first layer encryption algorithms
+    for algorithm1 in $(openssl enc -list | awk '{print $1}' | tail +2); do
+        decrypted_layer1="Decrypt_${algorithm1}-${pass}-layer1.enc"
+
+        # Decrypt the first layer using the selected algorithm and password
+        openssl "${algorithm1:1}" -d -pbkdf2 -in "$input_file" -out "$decrypted_layer1" -k "$pass"
+
+        # Loop through second layer encryption algorithms
+        for algorithm2 in $(openssl enc -list | awk '{print $1}' | tail +2); do
+            decrypted_final="Decrypt_${algorithm1}-${algorithm2}-${pass}.txt"
+
+            # Decrypt the second layer using a different algorithm and the result from the first layer
+            openssl "${algorithm2:1}" -d -pbkdf2 -in "$decrypted_layer1" -out "$decrypted_final" -k "$pass"
+        done
+    done
+done < "$wordlist"
