@@ -1,4 +1,4 @@
-# this is just a simple shell script to runn passwords against encrypted files 
+# this is just a simple shell script to run passwords against encrypted files 
 
 for pass in $(cat wordlist.txt); # password list 
 do
