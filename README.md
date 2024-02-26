@@ -1,5 +1,5 @@
 # Main
-- Feel free to use this code for whatever you need it for, this read me file will be written as I update this repository, if you are looking for a specific files instructions ctr-F and search for the file name.
+- Feel free to use this code for whatever you need it for, this read me file will be written as I update this repository, if you are looking for a specific files instructions ctr-F and search for the file name, once this repo is more fleshed out readmes will be added to their folders, things are still moving so this might not happen for some time.
 
 # games
 - This is for any of the games that i upload, feel free to play them; and if you find any errors please let me know
