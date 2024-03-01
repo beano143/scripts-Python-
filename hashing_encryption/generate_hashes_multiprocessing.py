@@ -1,4 +1,3 @@
-  GNU nano 6.3                                                                                         multi.py                                                                                                   
 from string import ascii_letters, digits, punctuation
 from itertools import product
 import subprocess
