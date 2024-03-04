@@ -30,10 +30,10 @@ try:
                 poss_hash = generate_hash(string)
                 with open("hashes.txt", "r") as reading:
                     if poss_hash not in reading:
-                        data = f"{poss_hash}\n"
+                        data = f"{poss_hash} : {string}\n"
                         file.write(data)
                     else:
-                        info = f"Collision found with hash#{poss_hash} with {string}"
+                        info = f"Collision found with hash#{poss_hash}"
                         collisions.append(info)
         mindex += 1
 
