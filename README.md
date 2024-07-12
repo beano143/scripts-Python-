@@ -1,6 +1,8 @@
 # Main
 - Feel free to use this code for whatever you need it for, this read me file will be written as I update this repository, if you are looking for a specific files instructions ctr-F and search for the file name, once this repo is more fleshed out readmes will be added to their folders, things are still moving so this might not happen for some time.
 
+  -editors note: this is just a tool box mainly for my personl use, so there will be some poor organization
+
 # Actual code
 
 ## Full_bruteforce.py
